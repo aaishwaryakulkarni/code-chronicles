@@ -24,7 +24,9 @@ def findKthLargest(nums, k):
             if nums[i] <= pivot:
                 nums[i], nums[p] = nums[p], nums[i]
                 p = p + 1
+        print(r, p, nums[r], nums[p])
         nums[r], nums[p] = nums[p], nums[r]
+        print(nums)
 
         if p > k: return quickSelect(l, p - 1)
         elif p < k: return quickSelect(p + 1, r)
@@ -32,7 +34,8 @@ def findKthLargest(nums, k):
     
     return quickSelect(0, len(nums) - 1)
 
-nums = [3,2,3,1,2,4,5,5,6]
-k = 4
+# nums = [3,2,3,1,2,4,5,5,6]
+nums = [3,2,1,5,6,4]
+k = 2
 
 print(findKthLargest(nums, k))
