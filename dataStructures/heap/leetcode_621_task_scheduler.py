@@ -50,7 +50,7 @@ def leastInterval(tasks, n):
 	q = deque()
 
 	time = 0
-
+ 
 	while maxHeap or q:
 
 		time = time + 1
@@ -64,9 +64,6 @@ def leastInterval(tasks, n):
 			heapq.heappush(maxHeap, q.popleft()[0])
 
 	return time
-
-
-
 
 
 
