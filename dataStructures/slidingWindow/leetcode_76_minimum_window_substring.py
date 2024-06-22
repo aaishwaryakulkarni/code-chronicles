@@ -10,51 +10,55 @@ Output: "BANC"
 Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
 
 """
+from collections import Counter
 
-def minWindow(s, t):
-    """
-    :type s: str
-    :type t: str
-    :rtype: str
-    """
+class Solution(object):
+    def minWindow(self, s, t):
 
-    if t == "":
-        return ""
-    
-    window, countT = {}, {}
-    for c in t:
-        countT[c] = 1 + countT.get(c, 0)
-    
-    have, need = 0 , len(countT)
-    res, resLen = [-1, -1], float("infinity")
-    l = 0
-
-    for r in range(len(s)):
-        c = s[r]
-
-        window[c] = 1 + window.get(c,  0)
-
-        if c in countT and window[c] == countT[c]:
-            have = have + 1
+        #base condition
+        if t == "":
+            return ""
         
-        while have == need:
+        window = {}
+        target = Counter(t)
+        
+        have, need = 0 , len(target)
+        res, resLen = [-1, -1], float("infinity")
+        left, right = 0, 0
 
-            if(r - l + 1) < resLen:
-                res = [l, r]
-                resLen = r - l + 1
-            
-            #pop from left
-            window[s[l]] -= 1
-            if s[l] in countT and window[s[l]] < countT[s[l]]:
-                have = have - 1
-            
-            l = l + 1
+        while right < len(s):
 
-    l, r  = res
-    return s[l: r + 1] if resLen != float("infinity") else ""        
+            character = s[right]
+
+            #expanding window to right
+            window[character] = window.get(character,  0) + 1
+
+            if character in target and window[character] == target[character]:
+                have += 1
+            
+            #found a substring
+            while have == need:
+
+                #update the minimum window substring
+                if(right - left + 1) < resLen:
+                    res = [left, right]
+                    resLen = right - left + 1
+                
+                #contracting window from left
+                window[s[left]] -= 1
+                if s[left] in target and window[s[left]] < target[s[left]]:
+                    have -= 1
+                
+                left += 1
+            
+            right += 1
+
+        start_index, end_index  = res
+        return s[start_index: end_index + 1] if resLen != float("infinity") else ""        
 
 
 s = "ADOBECODEBANC"
 t = "ABC"
 
-print(minWindow(s,t))
+soln = Solution()
+print(soln.minWindow(s,t))
