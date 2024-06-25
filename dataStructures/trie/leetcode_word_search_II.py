@@ -23,7 +23,7 @@ class TrieNode:
         self.children = {}
         self.isEnd = False
     
-    def addWord(self, word):
+    def insertWord(self, word):
         cur = self
         for char in word:
             if char not in cur.children:
@@ -36,7 +36,7 @@ class Solution:
         root = TrieNode()
 
         for word in words:
-            root.addWord(word)
+            root.insertWord(word)
         
         rows, cols = len(board), len(board[0])
         result, visited = set(), set()
