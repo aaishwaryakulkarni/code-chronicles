@@ -1,34 +1,18 @@
 """
-19. Remove Nth Node From End of List
+83. Remove Duplicates from Sorted List
 
-Given the head of a linked list, remove the nth node from the end of the list and return its head.
+Given the head of a sorted linked list, delete all duplicates such that each element appears only once.
+Return the linked list sorted as well.
 
-ONLY HEAD IS GIVEN, WE DONT HAVE THE LENGTH OF THE LINKED LIST
+Example 1:
+Input: head = [1,1,2]
+Output: [1,2]
 
-Approach:
-
-1-2-3-4-5-6-7-8-9
-n = 3, i.e. we need to delete 7
-
-2 pointers, slow and fast at head
-We first move fast by n nodes.
-Slow is at head and fast is at nth node
-Slow and fast are n positions apart
-Now we start moving slow and fast till fast reaches end.
-Now slow is at the position where we need to delete the node after slow
-
-Steps
-slow at 1, fast at 1
-fast after 3 (as n=3) iterations will be at 4
-slow at 2, fast at 5
-slow at 3, fast at 6
-slow at 4, fast at 7
-slow at 5, fast at 8
-slow at 6, fast at 9
-
-fast has reached end, slow.next is to be deleted. 
-
+Example 2:
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
 """
+
 
 class Node:
 	def __init__(self, value):
@@ -102,42 +86,29 @@ class MyLinkedList:
 			print(f"Index : {i+1} | Value : {cur_node.value}")
 
 			i = i + 1
+			
+	def deleteDuplicates(self):
 
-
-	def delete_nth_node_from_end(self,head, n):
-
-		#***********We are given only head and n************
-		slow = self.head
-		fast = slow
-
-		for i in range(n):
-			fast = fast.next
-		
-		if not fast:
-			return head
-
-		while(fast.next != None):
-			slow = slow.next
-			fast = fast.next
-
-		slow.next = slow.next.next
-		return head
-
-
+		pointer = self.head
+		if self.head is not None:
+			while pointer.next is not None:
+				if pointer.value == pointer.next.value:
+					pointer.next = pointer.next.next
+				else:
+					pointer = pointer.next
+		return self.head
 
 
 # creating a linked list
 myLinkedList = MyLinkedList()
 myLinkedList.addAtHead(1)
+myLinkedList.addAtHead(1)
+myLinkedList.addAtTail(1)
 myLinkedList.addAtTail(2)
 myLinkedList.addAtTail(3)
-myLinkedList.addAtTail(4)
-myLinkedList.addAtTail(5)
-myLinkedList.addAtTail(6)
-myLinkedList.addAtTail(7)
-myLinkedList.addAtTail(8)
-myLinkedList.addAtTail(9)
+myLinkedList.addAtTail(3)
+
 
 myLinkedList.printLinkedList()
-myLinkedList.delete_nth_node_from_end(3)
+myLinkedList.deleteDuplicates()
 myLinkedList.printLinkedList()

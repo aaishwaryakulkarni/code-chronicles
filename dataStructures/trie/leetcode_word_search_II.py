@@ -48,7 +48,6 @@ class Solution:
                 return
             
             visited.add((r, c))
-            print(r, c, board[r][c])
             cur_node = cur_node.children[board[r][c]]
             word += board[r][c]
 

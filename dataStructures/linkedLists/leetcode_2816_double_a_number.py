@@ -1,33 +1,23 @@
 """
-19. Remove Nth Node From End of List
+2816. Double a Number Represented as a Linked List
 
-Given the head of a linked list, remove the nth node from the end of the list and return its head.
+You are given the head of a non-empty linked list representing a non-negative integer without leading 
+zeroes.
+Return the head of the linked list after doubling it.
 
-ONLY HEAD IS GIVEN, WE DONT HAVE THE LENGTH OF THE LINKED LIST
+ 
 
-Approach:
+Example 1:
+Input: head = [1,8,9]
+Output: [3,7,8]
+Explanation: The figure above corresponds to the given linked list which represents the number 189.
+Hence, the returned linked list represents the number 189 * 2 = 378.
 
-1-2-3-4-5-6-7-8-9
-n = 3, i.e. we need to delete 7
-
-2 pointers, slow and fast at head
-We first move fast by n nodes.
-Slow is at head and fast is at nth node
-Slow and fast are n positions apart
-Now we start moving slow and fast till fast reaches end.
-Now slow is at the position where we need to delete the node after slow
-
-Steps
-slow at 1, fast at 1
-fast after 3 (as n=3) iterations will be at 4
-slow at 2, fast at 5
-slow at 3, fast at 6
-slow at 4, fast at 7
-slow at 5, fast at 8
-slow at 6, fast at 9
-
-fast has reached end, slow.next is to be deleted. 
-
+Example 2:
+Input: head = [9,9,9]
+Output: [1,9,9,8]
+Explanation: The figure above corresponds to the given linked list which represents the number 999.
+Hence, the returned linked list reprersents the number 999 * 2 = 1998. 
 """
 
 class Node:
@@ -102,42 +92,47 @@ class MyLinkedList:
 			print(f"Index : {i+1} | Value : {cur_node.value}")
 
 			i = i + 1
+	
+	def doubleIt(self):
 
+		def reverse(node):
+			cur_node = node
+			prev = None
+			
+			while cur_node:
+				temp = cur_node.next
+				cur_node.next = prev
+				prev = cur_node
+				cur_node = temp
 
-	def delete_nth_node_from_end(self,head, n):
-
-		#***********We are given only head and n************
-		slow = self.head
-		fast = slow
-
-		for i in range(n):
-			fast = fast.next
+			return prev
 		
-		if not fast:
-			return head
+		reversed_list = reverse(self.head)
 
-		while(fast.next != None):
-			slow = slow.next
-			fast = fast.next
+		carry = 0
+		cur_node = reversed_list
+		while cur_node:
+			doubled_value = 2 * cur_node.value + carry
+			cur_node.value = doubled_value % 10
+			carry = doubled_value // 10
+			 
+			if not cur_node.next and carry:
+				cur_node.next = Node(carry)
+				carry = 0
+				break
+			cur_node = cur_node.next
 
-		slow.next = slow.next.next
-		return head
+		self.head = reverse(reversed_list)
+		return self.head
 
-
-
-
+ 
 # creating a linked list
 myLinkedList = MyLinkedList()
-myLinkedList.addAtHead(1)
-myLinkedList.addAtTail(2)
-myLinkedList.addAtTail(3)
-myLinkedList.addAtTail(4)
-myLinkedList.addAtTail(5)
-myLinkedList.addAtTail(6)
-myLinkedList.addAtTail(7)
-myLinkedList.addAtTail(8)
+myLinkedList.addAtHead(9)
+myLinkedList.addAtTail(9)
 myLinkedList.addAtTail(9)
 
+
 myLinkedList.printLinkedList()
-myLinkedList.delete_nth_node_from_end(3)
+myLinkedList.doubleIt()
 myLinkedList.printLinkedList()
